@@ -25,6 +25,14 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     console.log('connection error', err);
   const booksCollection = client.db("bookdb").collection("books");
+
+  app.get('/books', (req, res) => {
+    booksCollection.find()
+    .toArray((err, book) => {
+      res.send(book)
+    })
+  })
+
   app.post('/addBookInfo', (req, res) => {
     const newBookInfo = req.body;
     console.log('adding book info', newBookInfo)
