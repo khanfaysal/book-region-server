@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 require('dotenv').config()
 
 const port = process.env.PORT || 5055;
@@ -43,6 +44,24 @@ client.connect(err => {
     })
   })
 //   client.close();
+
+// order database code
+app.get('/order', (req, res) => {
+  order.find({email: req.query.email})
+  .toArray((err, documents) => {
+      res.send(documents);
+  })
+})
+
+const orders = client.db("bookdb").collection("books");
+app.post('/addBookOrder', (req, res) => {
+    const newOrder = req.body;
+    console.log(newOrder);
+    order.insertOne(newOrder)
+    .then(result => {
+        res.send(result.insertedCount > 0);
+    })
+})
 });
 
 
