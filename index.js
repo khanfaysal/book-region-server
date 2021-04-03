@@ -46,19 +46,20 @@ client.connect(err => {
 //   client.close();
 
 // order database code
-app.get('/order', (req, res) => {
-  order.find({email: req.query.email})
+app.get('/orders', (req, res) => {
+  books.find({email: req.query.email})
   .toArray((err, documents) => {
       res.send(documents);
   })
 })
 
-const orders = client.db("bookdb").collection("books");
-app.post('/addBookOrder', (req, res) => {
+const orderlist = client.db("bookdb").collection("orders");
+app.post('/addOrder', (req, res) => {
     const newOrder = req.body;
-    console.log(newOrder);
-    order.insertOne(newOrder)
+    console.log(newOrder)
+    orderlist.insertOne(newOrder)
     .then(result => {
+      console.log(result)
         res.send(result.insertedCount > 0);
     })
 })
