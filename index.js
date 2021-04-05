@@ -63,6 +63,17 @@ app.post('/addOrder', (req, res) => {
     })
 })
 
+// delete specific books
+app.delete('/deleteBook/:id', (req, res) => {
+  const id = ObjectID(req.params.id);
+  console.log(id)
+  booksCollection.findOneAndDelete({_id:id})
+  .then(document => res.send(document.value))
+})
+// app.delete('/delete/:id',(req, res) =>{
+//   console.log(req.params.id);
+// })
+
 });
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
