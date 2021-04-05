@@ -15,11 +15,8 @@ app.use(bodyParser.json());
 console.log(process.env.DB_USER);
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World This is Faysal Khan!')
 })
-
-
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.brk1j.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -27,6 +24,7 @@ client.connect(err => {
     console.log('connection error', err);
   const booksCollection = client.db("bookdb").collection("books");
   const orderList = client.db("bookdb").collection("orders");
+  const manageDataCollection = client.db("bookdb").collection("manageData");
 // all books database code
   app.get('/books', (req, res) => {
     booksCollection.find()
@@ -64,10 +62,8 @@ app.post('/addOrder', (req, res) => {
         res.send(result.insertedCount > 0);
     })
 })
+
 });
-
-
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
