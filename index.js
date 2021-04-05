@@ -11,7 +11,6 @@ const port = process.env.PORT || 5055;
 
 app.use(cors());
 app.use(bodyParser.json());
-
 console.log(process.env.DB_USER);
 
 app.get('/', (req, res) => {
@@ -22,10 +21,9 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     console.log('connection error', err);
-  const booksCollection = client.db("bookdb").collection("books");
-  const orderList = client.db("bookdb").collection("orders");
-  const manageDataCollection = client.db("bookdb").collection("manageData");
-// all books database code
+    const booksCollection = client.db("bookdb").collection("books");
+    const orderList = client.db("bookdb").collection("orders");
+// all books API database code
   app.get('/books', (req, res) => {
     booksCollection.find()
     .toArray((err, book) => {
@@ -34,9 +32,9 @@ client.connect(err => {
   })
 
   app.post('/addBookInfo', (req, res) => {
-    const newBookInfo = req.body;
-    console.log('adding book info', newBookInfo)
-    booksCollection.insertOne(newBookInfo)
+      const newBookInfo = req.body;
+      console.log('adding book info', newBookInfo)
+      booksCollection.insertOne(newBookInfo)
     .then(result =>{
       console.log('inserted count',result.insertedCount)
       res.send(result.insertedCount > 0)
@@ -44,7 +42,7 @@ client.connect(err => {
   })
 //   client.close();
 
-// order books database code
+// order books API database code
 app.get('/orders', (req, res) => {
   orderList.find({})
   .toArray((err, documents) => {
@@ -54,25 +52,22 @@ app.get('/orders', (req, res) => {
 
 
 app.post('/addOrder', (req, res) => {
-    const newOrder = req.body;
-    console.log(newOrder)
-    orderList.insertOne(newOrder)
+      const newOrder = req.body;
+      console.log(newOrder)
+      orderList.insertOne(newOrder)
     .then(result => {
       console.log(result)
-        res.send(result.insertedCount > 0);
+      res.send(result.insertedCount > 0);
     })
 })
 
-// delete specific books
-app.delete('/deleteBook/:id', (req, res) => {
-  const id = ObjectID(req.params.id);
-  console.log(id)
-  booksCollection.findOneAndDelete({_id:id})
-  .then(document => res.send(document.value))
-})
-// app.delete('/delete/:id',(req, res) =>{
-//   console.log(req.params.id);
-// })
+// delete specific books API database code
+  app.delete('/deleteBook/:id', (req, res) => {
+    const id = ObjectID(req.params.id);
+    console.log(id)
+    booksCollection.findOneAndDelete({_id:id})
+    .then(document => res.send(document.value))
+  })
 
 });
 app.listen(port, () => {
