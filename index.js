@@ -13,9 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 console.log(process.env.DB_USER);
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World This is Faysal Khan!')
-// })
+app.get('/', (req, res) => {
+  res.send('Hello World This is Faysal Khan!')
+})
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.brk1j.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
