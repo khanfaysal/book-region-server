@@ -8,14 +8,13 @@ require('dotenv').config()
 
 const port = process.env.PORT || 5055;
 
+app.get('/',(req, res) =>{
+  res.send("hello everything works fine")
+})
 
 app.use(cors());
 app.use(bodyParser.json());
 console.log(process.env.DB_USER);
-
-// app.get('/', (req, res) => {
-//   res.send('Hello World This is Faysal Khan!')
-// })
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.brk1j.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -70,6 +69,4 @@ app.post('/addOrder', (req, res) => {
   })
 
 });
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+app.listen(process.env.PORT || port)
